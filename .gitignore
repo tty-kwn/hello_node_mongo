@@ -104,4 +104,4 @@ dist
 .tern-port
 
 # mongodb data dir
-data/
+app/data/
