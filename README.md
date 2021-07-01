@@ -1,9 +1,13 @@
 # hello_node_mongo
 
+```
 brew install mongodb mongodb-conpass
+```
 
 下記ベースにアプリ作成
 https://qiita.com/hairui/items/5e3c4de1f7e9dbf14d16
+
+```
 npm install express -g
 npm install express-generator -g
 
@@ -22,3 +26,4 @@ mongo
  use appdb
  db.usercollection.insert({"user":"user1","e-mail":"user1@gmail.com"})
 vi app.js
+```
