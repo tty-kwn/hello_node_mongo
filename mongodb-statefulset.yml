@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  labels:
+    app: mongo-statefulset
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - port: 27017
+      name: mongo
+  selector:
+    app: mongo-statefulset
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+spec:
+  serviceName: mongo
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-statefulset
+  template:
+    metadata:
+      labels:
+        app: mongo-statefulset
+    spec:
+      containers:
+        - name: mongo
+          image: mongo
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: admin
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: passw0rd
+            - name: MONGO_INITDB_DATABASE
+              value: appdb
+          ports:
+            - containerPort: 27017
+              name: mongo
+          volumeMounts:
+            - name: pvc
+              mountPath: /data/db
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - mongo --port 27017 --eval "rs.status()" | grep -vq "REMOVED"
+            initialDelaySeconds: 45
+            timeoutSeconds: 5
+  volumeClaimTemplates:
+    - metadata:
+        name: pvc
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        # storageClassName: ibmc-file-bronze   # 容量 20Gi IKS
+        # storageClassName: gluster-heketi     # 容量 12Gi GlusterFS
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 2Gi

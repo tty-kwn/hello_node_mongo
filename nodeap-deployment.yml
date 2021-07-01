@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeap
+  labels:
+    app: nodeap
+    type: application
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nodeap
+      type: application
+  template:
+    metadata:
+      name: nodeap
+      labels:
+        app: nodeap
+        type: application
+    spec:
+      containers:
+        - name: nodeap
+          image: ttykwn/hello-node-mongo:0.6
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+            - name: mongo_user
+              valueFrom:
+                secretKeyRef:
+                  name: mongosecret
+                  key: username
+            - name: mongo_pw
+              valueFrom:
+                secretKeyRef:
+                  name: mongosecret
+                  key: password
+            - name: mongo_domain
+              value: mongo
+            - name: mongo_port
+              value: '27017'
+            - name: mongo_db_name
+              value: appdb
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeap
+  labels:
+    app: nodeap
+    type: application
+spec:
+  ports:
+    - name: 3000-tcp
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: nodeap
+    type: application
+  type: ClusterIP
+  sessionAffinity: None
+---

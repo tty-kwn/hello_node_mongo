@@ -1,0 +1,11 @@
+# mongo --host mongo -u admin -p passw0rd
+use appdb
+db.createUser({user:"appdb_readonly", pwd:"passw0rd", roles:[{role:"read", db:"appdb"}]})
+db.users.insert({"name":"user1","mail":"user1@example.com"})
+db.users.insert({"name":"user2","mail":"user2@example.com"})
+db.users.insert({"name":"ichiro","mail":"ichiro.suzuki@example.com"})
+db.users.insert({"name":"jiro","mail":"jiro.tanaka@example.com"})
+db.users.insert({"name":"saburo","mail":"saburo.ito@example.com"})
+db.users.insert({"name":"shiro","mail":"shiro.kato@example.com"})
+db.users.insert({"name":"goro","mail":"goro.saito@example.com"})
+db.users.insert({"name":"rokuro","mail":"rokuro.teshigawara@example.com"})

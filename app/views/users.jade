@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  h1 ユーザ一覧
+  ul
+    each user, i in users
+      li #{user.name}: #[a(href="mailto:#{user.mail}") #{user.mail}]
