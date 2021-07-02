@@ -60,6 +60,6 @@ spec:
   selector:
     app: nodeap
     type: application
-  type: ClusterIP
+  type: NodePort
   sessionAffinity: None
 ---

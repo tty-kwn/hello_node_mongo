@@ -58,9 +58,9 @@ spec:
         name: pvc
       spec:
         accessModes: ["ReadWriteOnce"]
-        # storageClassName: ibmc-file-bronze   # 容量 20Gi IKS
-        # storageClassName: gluster-heketi     # 容量 12Gi GlusterFS
-        storageClassName: standard
+        storageClassName: ibmc-file-bronze   # 20Gi IKS
+        # storageClassName: gluster-heketi     # 12Gi GlusterFS
+        # storageClassName: standard           # 2Gi  minikube
         resources:
           requests:
-            storage: 2Gi
+            storage: 20Gi
